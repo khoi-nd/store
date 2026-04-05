@@ -28,8 +28,7 @@
             <td>
                 <span th:if="${order.status == 'PENDING'}" class="badge bg-warning text-dark">Chờ duyệt</span>
                 <span th:if="${order.status == 'SHIPPING'}" class="badge bg-primary">Đang giao</span>
-                <span th:if="${order.status == 'RECEIVED'}" class="badge bg-info text-dark">Đã nhận hàng</span>
-                <span th:if="${order.status == 'COMPLETED'}" class="badge bg-success">Hoàn thành</span>
+                <span th:if="${order.status == 'COMPLETED'}" class="badge bg-success">Đã Hoàn thành</span>
             </td>
 
             <td>

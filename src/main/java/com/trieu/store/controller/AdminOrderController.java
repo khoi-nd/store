@@ -24,21 +24,9 @@ public class AdminOrderController {
     // 1. Hiển thị TOÀN BỘ đơn hàng và THỐNG KÊ cho Admin xem
     @GetMapping
     public String viewAllOrdersForAdmin(Model model) {
-        // Lấy danh sách đơn hàng
+        // Lấy danh sách đơn hàng và trả về view, không tính tiền ở đây nữa
         List<Order> allOrders = orderRepository.findAllByOrderByOrderDateDesc();
-
-        // [UC9] Gọi hàm tính tổng doanh thu từ Repository
-        java.math.BigDecimal totalRevenue = orderRepository.calculateTotalRevenue();
-
-        // Đề phòng trường hợp chưa bán được đơn nào (database trả về null)
-        if (totalRevenue == null) {
-            totalRevenue = java.math.BigDecimal.ZERO;
-        }
-
-        // Đẩy dữ liệu ra view
         model.addAttribute("orders", allOrders);
-        model.addAttribute("totalRevenue", totalRevenue); // Gửi tổng tiền ra HTML
-
         return "admin-orders";
     }
 
@@ -51,4 +39,5 @@ public class AdminOrderController {
         // Cập nhật xong thì load lại trang danh sách
         return "redirect:/admin/orders";
     }
+
 }

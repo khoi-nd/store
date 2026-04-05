@@ -20,4 +20,20 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     // [UC9] Thống kê: Cộng tổng tiền (totalAmount) của các đơn có status = 'COMPLETED'
     @Query("SELECT SUM(o.totalAmount) FROM Order o WHERE o.status = 'COMPLETED'")
     BigDecimal calculateTotalRevenue();
+
+    // 1. Tính tổng doanh thu theo NĂM chỉ định
+    @Query(value = "SELECT SUM(total_amount) FROM orders WHERE status = 'COMPLETED' AND YEAR(order_date) = ?1", nativeQuery = true)
+    java.math.BigDecimal calculateRevenueByYear(int year);
+
+    // 2. Tính tổng doanh thu theo THÁNG và NĂM chỉ định
+    @Query(value = "SELECT SUM(total_amount) FROM orders WHERE status = 'COMPLETED' AND MONTH(order_date) = ?1 AND YEAR(order_date) = ?2", nativeQuery = true)
+    java.math.BigDecimal calculateRevenueByMonth(int month, int year);
+
+    // Đếm tổng số đơn hàng đã Hoàn thành theo NĂM
+    @Query(value = "SELECT COUNT(id) FROM orders WHERE status = 'COMPLETED' AND YEAR(order_date) = ?1", nativeQuery = true)
+    Integer countOrdersByYear(int year);
+
+    // Đếm tổng số đơn hàng đã Hoàn thành theo THÁNG và NĂM
+    @Query(value = "SELECT COUNT(id) FROM orders WHERE status = 'COMPLETED' AND MONTH(order_date) = ?1 AND YEAR(order_date) = ?2", nativeQuery = true)
+    Integer countOrdersByMonth(int month, int year);
 }

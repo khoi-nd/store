@@ -21,18 +21,27 @@ public class OrderController {
 
     // 1. Hiển thị danh sách đơn hàng của khách
     @GetMapping("/history")
-    public String viewOrderHistory(Model model) {
-        // TẠM THỜI: Giả sử User ID đang đăng nhập là 1 để test.
-        // (Sau này làm xong Use case Đăng nhập, bạn sẽ lấy ID từ Session thực tế)
-        Integer loggedInUserId = 11;
+    public String viewOrderHistory(jakarta.servlet.http.HttpSession session, Model model) {
 
-        // Gọi Repository lấy danh sách đơn của user này
-        List<Order> orders = orderRepository.findByUserIdOrderByOrderDateDesc(loggedInUserId);
+        // Bước A: Lấy thông tin người dùng đang đăng nhập từ Session
+        // (Lưu ý: Đảm bảo import đúng class User của entity bạn nhé)
+        com.trieu.store.entity.User loggedInUser = (com.trieu.store.entity.User) session.getAttribute("loggedInUser");
+
+        // Bước B: Kiểm tra bảo mật - Nếu chưa đăng nhập (hoặc hết hạn session) thì đẩy về trang Login
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
+        // Bước C: Lấy ID THỰC TẾ của chính người đang đăng nhập đó
+        Integer realUserId = loggedInUser.getId();
+
+        // Bước D: Gọi Repository tìm đúng đơn hàng của ID này
+        List<Order> orders = orderRepository.findByUserIdOrderByOrderDateDesc(realUserId);
 
         // Đẩy dữ liệu sang HTML
         model.addAttribute("orders", orders);
 
-        return "history"; // Tương ứng với file history.html trong thư mục templates
+        return "history";
     }
 
     // 2. Xử lý khi khách bấm nút "Đã nhận được hàng"

@@ -18,7 +18,7 @@ public class OrderService {
 
         // Chỉ cho phép xác nhận nếu đơn đang ở trạng thái SHIPPING
         if ("SHIPPING".equals(order.getStatus())) {
-            order.setStatus("RECEIVED");
+            order.setStatus("COMPLETED");
             orderRepository.save(order);
         } else {
             throw new RuntimeException("Trạng thái không hợp lệ!");

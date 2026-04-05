@@ -11,6 +11,7 @@
         <h1>🛒 Cửa Hàng Tạp Hóa</h1>
         <div>
             <a th:href="@{/cart}" style="margin-right: 15px; font-weight: bold; color: #ee4d2d;">Giỏ hàng 🛒</a>
+            <a th:if="${session.loggedInUser}" th:href="@{/history}" style="margin-right: 15px; text-decoration: none; color: #333; font-weight: bold;">Lịch sử mua hàng 📜</a>
             <span th:if="${session.loggedInUser}" th:text="'Chào, ' + ${session.loggedInUser.fullName}"></span>
             <a th:if="${session.loggedInUser}" th:href="@{/logout}" style="margin-left: 10px;">Đăng xuất</a>
             <a th:unless="${session.loggedInUser}" th:href="@{/login}" class="btn-block-primary" style="padding: 8px 15px; width: auto; display: inline-block; text-decoration: none;">Đăng nhập</a>
